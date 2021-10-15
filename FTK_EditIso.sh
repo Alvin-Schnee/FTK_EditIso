@@ -41,6 +41,8 @@ logHeader="${RED}$programName - EditIso${DEFAULT} >"
 installer="Strelizia"
 initializer="StreliziaChroot"
 
+username=$(whoami)
+
 function printSuccessOrFailure {
     if [ $? -eq 0 ]; then
         echo -e "[ ${GREEN}Done${DEFAULT} ]"
@@ -70,18 +72,18 @@ if [ ! -n "$isDos2unixInstalled" ]; then
 fi
 
 pacman -Sy squashfs-tools
-
+echo $username
 #############################################################
 
 ################### Downloading Installer ###################
 
 gh repo clone Alvin-Schnee/Strelizia &> /dev/null
 
-chmod +x "/home/$(whoami)/$installer/$installer.sh"
-chmod +x "/home/$(whoami)/$installer/$initializer.sh"
+chmod +x /home/$username/$installer/$installer.sh
+chmod +x /home/$username/$installer/$initializer.sh
 
-dos2unix -q "/home/$(whoami)/$installer/$installer.sh" &> /dev/null
-dos2unix -q "/home/$(whoami)/$installer/$initializer.sh" &> /dev/null
+dos2unix -q /home/$username/$installer/$installer.sh &> /dev/null
+dos2unix -q /home/$username/$installer/$initializer.sh &> /dev/null
 
 #############################################################
 
@@ -93,34 +95,34 @@ echo -e "$logheader Enabling time synchronization ... "
 systemctl start systemd-timesyncd
 
 echo -ne "$logheader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
-unsquashfs -f -d "/home/$(whoami)/customiso/arch/x86_64/squashfs-root" "/home/$(whoami)/customiso/arch/x86_64/airootfs.sfs" > /dev/null
+unsquashfs -f -d /home/$username/customiso/arch/x86_64/squashfs-root /home/$username/customiso/arch/x86_64/airootfs.sfs > /dev/null
 printSuccessOrFailure
 
 echo -ne "$logheader Copying the scripts to the ISO ... "
-cp "/home/$(whoami)/$installer/$installer.sh" "/home/$(whoami)/customiso/arch/x86_64/squashfs-root/bin/$installer"
-cp "/home/$(whoami)/$installer/$initializer.sh" "/home/$(whoami)/customiso/arch/x86_64/squashfs-root/bin/$initializer"
+cp /home/$username/$installer/$installer.sh /home/$username/customiso/arch/x86_64/squashfs-root/bin/$installer
+cp /home/$username/$installer/$initializer.sh /home/$username/customiso/arch/x86_64/squashfs-root/bin/$initializer
 printSuccessOrFailure
 
 echo -ne "\n$logheader Moving package list ... "
-mv /home/$(whoami)/customiso/arch/x86_64/squashfs-root/root/pkglist.txt /home/$(whoami)/customiso/arch/pkglist.x86_64.txt
+mv /home/$username/customiso/arch/x86_64/squashfs-root/root/pkglist.txt /home/$username/customiso/arch/pkglist.x86_64.txt
 printSuccessOrFailure
 
-rm /home/$(whoami)/customiso/arch/x86_64/airootfs.sfs
+rm /home/$username/customiso/arch/x86_64/airootfs.sfs
 echo -ne "$logheader Recreating airootfs.sfs via mksquashfs (this is gonna take some time) ... "
-mksquashfs /home/$(whoami)/customiso/arch/x86_64/squashfs-root /home/$(whoami)/customiso/arch/x86_64/airootfs.sfs -comp xz &> /dev/null
+mksquashfs /home/$username/customiso/arch/x86_64/squashfs-root /home/$username/customiso/arch/x86_64/airootfs.sfs -comp xz &> /dev/null
 printSuccessOrFailure
 
-rm -r /home/$(whoami)/customiso/arch/x86_64/squashfs-root
+rm -r /home/$username/customiso/arch/x86_64/squashfs-root
 echo -ne "$logheader Generating signature ... "
-md5sum /home/$(whoami)/customiso/arch/x86_64/airootfs.sfs > /home/$(whoami)/customiso/arch/x86_64/airootfs.md5
+md5sum /home/$username/customiso/arch/x86_64/airootfs.sfs > /home/$username/customiso/arch/x86_64/airootfs.md5
 printSuccessOrFailure
 
-cd /home/$(whoami)/customiso
+cd /home/$username/customiso
 echo -ne "$logheader Generating ISO image ... "
-genisoimage -l -r -J -V "ARCH_202110" -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o /home/$(whoami)/FTK_PROJECT-ARCH.iso ./ &> /dev/null
-isohybrid /home/$(whoami)/FTK_PROJECT-ARCH.iso > /dev/null
+genisoimage -l -r -J -V "ARCH_202110" -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o /home/$username/FTK_PROJECT-ARCH.iso ./ &> /dev/null
+isohybrid /home/$username/FTK_PROJECT-ARCH.iso > /dev/null
 printSuccessOrFailure
-cd /home/$(whoami)/FTK_EditISO
+cd /home/$username/FTK_EditISO
 
 echo -ne "$logheader Mounting USB device ... "
 mount LABEL="ARCH_202110" /mnt/usb # -t ntfs-3g -o nls=utf8,umask=0222
@@ -128,13 +130,13 @@ printSuccessOrFailure
 
 echo -ne "$logheader Copying ISO to USB device ... "
 rm -rf /mnt/usb/*
-cp /home/$(whoami)/FTK_PROJECT-ARCH.iso /mnt/usb/FTK_PROJECT-ARCH.iso
+cp /home/$username/FTK_PROJECT-ARCH.iso /mnt/usb/FTK_PROJECT-ARCH.iso
 printSuccessOrFailure
 
 echo -ne "$logheader Unmounting USB device ..."
 umount LABEL="ARCH_202110"
 printSuccessOrFailure
 
-rm -rf /home/$(whoami)/$installer
+rm -rf /home/$username/$installer
 
 echo -ne "\n$logheader Thank you for your patience, master. *bows*\n"
