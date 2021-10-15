@@ -60,7 +60,7 @@ if [ ! -n "$isGitInstalled" ]; then
 	pacman --noconfirm -Sy git github-cli &> /dev/null
 	printSuccessOrFailure
 
-	gh auth login	
+	gh auth login
 fi
 
 if [ ! -n "$isDos2unixInstalled" ]; then
@@ -69,32 +69,37 @@ if [ ! -n "$isDos2unixInstalled" ]; then
 	printSuccessOrFailure
 fi
 
-gh repo clone Alvin-Schnee/Strelizia
+pacman -Sy squashfs-tools
+
+#############################################################
+
+################### Downloading Installer ###################
+
+gh repo clone Alvin-Schnee/Strelizia &> /dev/null
+
+chmod +x "/home/$(whoami)/$installer/$installer.sh"
+chmod +x "/home/$(whoami)/$installer/$initializer.sh"
+
+dos2unix -q "/home/$(whoami)/$installer/$installer.sh" &> /dev/null
+dos2unix -q "/home/$(whoami)/$installer/$initializer.sh" &> /dev/null
+
+#############################################################
 
 clear
 
-echo -ne "$logheader Enabling time synchronization ... "
+####################### Main Functions ######################
+
+echo -e "$logheader Enabling time synchronization ... "
 systemctl start systemd-timesyncd
-printSuccessOrFailure
 
 echo -ne "$logheader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
 unsquashfs -f -d "/home/$(whoami)/customiso/arch/x86_64/squashfs-root" "/home/$(whoami)/customiso/arch/x86_64/airootfs.sfs" > /dev/null
 printSuccessOrFailure
 
-
 echo -ne "$logheader Copying the scripts to the ISO ... "
-
-chmod 777 "/home/$(whoami)/$installer/$installer.sh"
-chmod 777 "/home/$(whoami)/$installer/$initializer.sh"
-
-dos2unix -q "/home/$(whoami)/$installer/$installer.sh"
-dos2unix -q "/home/$(whoami)/$installer/$initializer.sh"
-
 cp "/home/$(whoami)/$installer/$installer.sh" "/home/$(whoami)/customiso/arch/x86_64/squashfs-root/bin/$installer"
 cp "/home/$(whoami)/$installer/$initializer.sh" "/home/$(whoami)/customiso/arch/x86_64/squashfs-root/bin/$initializer"
-
 printSuccessOrFailure
-
 
 echo -ne "\n$logheader Moving package list ... "
 mv /home/$(whoami)/customiso/arch/x86_64/squashfs-root/root/pkglist.txt /home/$(whoami)/customiso/arch/pkglist.x86_64.txt
