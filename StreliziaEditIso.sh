@@ -137,9 +137,9 @@ printSuccessOrFailure
 rm -rf archlive &>/dev/null
 
 echo -ne "\n$logHeader Copying files to ISO ... "
-cp -r /usr/share/archiso/configs/releng/ archlive
-cp -r "/home/$username/$installer/$installer.sh" archlive/airootfs/etc
-cp -r "/home/$username/$installer/$initializer.sh" archlive/airootfs/etc
+sudo cp -r /usr/share/archiso/configs/releng/ archlive
+sudo cp -r "/home/$username/$installer/$installer.sh" archlive/airootfs/etc
+sudo cp -r "/home/$username/$installer/$initializer.sh" archlive/airootfs/etc
 printSuccessOrFailure
 
 if [[ "$verbose" = true ]]; then
