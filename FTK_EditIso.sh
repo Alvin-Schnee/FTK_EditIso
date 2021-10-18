@@ -48,8 +48,6 @@ username=$(whoami)
 
 ###################### Helper Functions #####################
 
-
-
 function printSuccessOrFailure {
     if [ $? -eq 0 ]; then
         echo -e "[ ${GREEN}Done${DEFAULT} ]"
@@ -103,12 +101,14 @@ clear
 
 ####################### Main Functions ######################
 
-echo -ne "\n$logHeader Enabling time synchronization ... "
+sudo su
+
+echo -ne "\n$logHeader Enabling time synchronization ... \n"
 systemctl start systemd-timesyncd
-printSuccessOrFailure
+echo -e "\n$logHeader Time synchronization is now functional."
 
 echo -ne "$logheader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
-unsquashfs -f -d "/home/$(whoami)/customiso/arch/x86_64/squashfs-root" "/home/$(whoami)/customiso/arch/x86_64/airootfs.sfs" #&> /dev/null
+sudo unsquashfs -f -d "/home/$username/customiso/arch/x86_64/squashfs-root" "/home/$username/customiso/arch/x86_64/airootfs.sfs" #&> /dev/null
 printSuccessOrFailure
 
 echo -ne "$logheader Copying the scripts to the ISO ... "
