@@ -141,6 +141,9 @@ rm -rf archlive &>/dev/null
 
 echo -ne "\n$logHeader Copying files to ISO ... "
 cp -r /usr/share/archiso/configs/releng/ archlive
+
+mkdir archlive/airootfs/bin
+
 cp -r "/home/$username/$installer/$installer.sh" "archlive/airootfs/bin/$installer.sh"
 cp -r "/home/$username/$installer/$initializer.sh" "archlive/airootfs/bin/$initializer.sh"
 printSuccessOrFailure
