@@ -112,44 +112,44 @@ sudo unsquashfs -f -d "/home/$username/customiso/arch/x86_64/squashfs-root" "/ho
 printSuccessOrFailure
 
 echo -ne "$logheader Copying the scripts to the ISO ... "
-cp "/home/$username/$installer/$installer.sh" "/home/$username/customiso/arch/x86_64/squashfs-root/bin/$installer"
-cp "/home/$username/$installer/$initializer.sh" "/home/$username/customiso/arch/x86_64/squashfs-root/bin/$initializer"
+sudo cp "/home/$username/$installer/$installer.sh" "/home/$username/customiso/arch/x86_64/squashfs-root/bin/$installer"
+sudo cp "/home/$username/$installer/$initializer.sh" "/home/$username/customiso/arch/x86_64/squashfs-root/bin/$initializer"
 printSuccessOrFailure
 
 echo -ne "\n$logheader Moving package list ... "
-mv "/home/$username/customiso/arch/x86_64/squashfs-root/root/pkglist.txt" "/home/$username/customiso/arch/pkglist.x86_64.txt"
+sudo mv "/home/$username/customiso/arch/x86_64/squashfs-root/root/pkglist.txt" "/home/$username/customiso/arch/pkglist.x86_64.txt"
 printSuccessOrFailure
 
-rm "/home/$username/customiso/arch/x86_64/airootfs.sfs"
+sudo rm "/home/$username/customiso/arch/x86_64/airootfs.sfs"
 echo -ne "$logheader Recreating airootfs.sfs via mksquashfs (this is gonna take some time) ... "
-mksquashfs "/home/$username/customiso/arch/x86_64/squashfs-root" "/home/$username/customiso/arch/x86_64/airootfs.sfs" -comp xz #&> /dev/null
+sudo mksquashfs "/home/$username/customiso/arch/x86_64/squashfs-root" "/home/$username/customiso/arch/x86_64/airootfs.sfs" -comp xz #&> /dev/null
 printSuccessOrFailure
 
-rm -r /home/$username/customiso/arch/x86_64/squashfs-root
+sudo rm -r /home/$username/customiso/arch/x86_64/squashfs-root
 echo -ne "$logheader Generating signature ... "
-md5sum /home/$username/customiso/arch/x86_64/airootfs.sfs > /home/$username/customiso/arch/x86_64/airootfs.md5
+sudo md5sum /home/$username/customiso/arch/x86_64/airootfs.sfs > /home/$username/customiso/arch/x86_64/airootfs.md5
 printSuccessOrFailure
 
 cd /home/$username/customiso
 echo -ne "$logheader Generating ISO image ... "
-genisoimage -l -r -J -V "ARCH_202110" -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o /home/$username/FTK_PROJECT-ARCH.iso ./ #&> /dev/null
-isohybrid "/home/$username/FTK_PROJECT-ARCH.iso" > /dev/null
+sudo genisoimage -l -r -J -V "ARCH_202110" -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o /home/$username/FTK_PROJECT-ARCH.iso ./ #&> /dev/null
+sudo isohybrid "/home/$username/FTK_PROJECT-ARCH.iso" > /dev/null
 printSuccessOrFailure
 cd /home/$username/FTK_EditISO
 
 echo -ne "$logheader Mounting USB device ... "
-mount LABEL="ARCH_202110" /mnt/usb # -t ntfs-3g -o nls=utf8,umask=0222
+sudo mount LABEL="ARCH_202110" /mnt/usb # -t ntfs-3g -o nls=utf8,umask=0222
 printSuccessOrFailure
 
 echo -ne "$logheader Copying ISO to USB device ... "
-rm -rf /mnt/usb/*
-cp "/home/$username/FTK_PROJECT-ARCH.iso" "/mnt/usb/FTK_PROJECT-ARCH.iso"
+sudo rm -rf /mnt/usb/*
+sudo cp "/home/$username/FTK_PROJECT-ARCH.iso" "/mnt/usb/FTK_PROJECT-ARCH.iso"
 printSuccessOrFailure
 
 echo -ne "$logheader Unmounting USB device ..."
-umount LABEL="ARCH_202110"
+sudo umount LABEL="ARCH_202110"
 printSuccessOrFailure
 
-rm -rf /home/$username/$installer
+sudo rm -rf /home/$username/$installer
 
 echo -ne "\n$logheader Thank you for your patience, master. *bows*\n"
