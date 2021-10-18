@@ -61,6 +61,8 @@ function printSuccessOrFailure {
 
 ####################### Main Functions ######################
 
+sudo su
+
 clear
 
 isGitInstalled='pacman -Q git github-cli'
@@ -100,8 +102,6 @@ dos2unix -q /home/$username/$installer/$initializer.sh &> /dev/null
 clear
 
 ####################### Main Functions ######################
-
-sudo su
 
 echo -ne "\n$logHeader Enabling time synchronization ... \n"
 systemctl start systemd-timesyncd
