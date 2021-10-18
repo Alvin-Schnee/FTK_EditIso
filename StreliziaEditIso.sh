@@ -134,17 +134,18 @@ dos2unix -q "$installer/$installer.sh"
 dos2unix -q "$installer/$initializer.sh"
 printSuccessOrFailure
 
-rm -rf archlive &>/dev/null
+rm -rf archlive &> /dev/null
+rm -rf /tmp &> /dev/null
 
 echo -ne "\n$logHeader Creating custom config ... "
 sudo cp -r /usr/share/archiso/configs/releng/ "/home/$username/archlive"
 printSuccessOrFailure
 
-echo -ne "\n$logHeader Copying installer to config ... "
+echo -ne "$logHeader Copying installer to config ... "
 sudo cp -r "/home/$username/$installer/$installer.sh" "/home/$username/archlive/airootfs/etc"
 printSuccessOrFailure
 
-echo -ne "\n$logHeader Copying initializer to config ... "
+echo -ne "$logHeader Copying initializer to config ... "
 sudo cp -r "/home/$username/$installer/$initializer.sh" "/home/$username/archlive/airootfs/etc"
 printSuccessOrFailure
 
