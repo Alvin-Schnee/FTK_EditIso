@@ -65,6 +65,7 @@ clear
 
 isGitInstalled='pacman -Q git github-cli'
 isDos2unixInstalled='pacman -Q dos2unix'
+isSquashfsToolsInstalled='pacman -Q squashfs-tools'
 
 if [ ! -n "$isGitInstalled" ]; then
 	echo -ne "$logheader Installing git ... "
@@ -80,7 +81,11 @@ if [ ! -n "$isDos2unixInstalled" ]; then
 	printSuccessOrFailure
 fi
 
-sudo pacman -Sy squashfs-tools &> /dev/null
+if [ ! -n "$isSquashfsToolsInstalled" ]; then
+	echo -ne "$logheader Installing squashfs-tools ... "
+	pacman --noconfirm -Sy squashfs-tools &> /dev/null
+	printSuccessOrFailure
+fi
 
 #############################################################
 
@@ -98,9 +103,9 @@ dos2unix -q /home/$username/$installer/$initializer.sh &> /dev/null
 
 ####################### Main Functions ######################
 
-echo -ne "\n$logHeader Enabling time synchronization ... \n"
+echo -ne "\n$logHeader Enabling time synchronization ... "
 sudo systemctl start systemd-timesyncd
-echo -e "\n$logHeader Time synchronization is now functional."
+printSuccessOrFailure
 
 echo -ne "$logheader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
 sudo unsquashfs -f -d "/home/$username/customiso/arch/x86_64/squashfs-root" "/home/$username/customiso/arch/x86_64/airootfs.sfs" #&> /dev/null
