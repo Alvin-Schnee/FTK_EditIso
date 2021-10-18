@@ -105,10 +105,10 @@ dos2unix -q /home/$username/$installer/$initializer.sh &> /dev/null
 
 echo -ne "\n$logHeader Enabling time synchronization ... "
 sudo systemctl start systemd-timesyncd
-#printSuccessOrFailure
+printSuccessOrFailure
 
-echo -ne "\n$logheader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
-sudo unsquashfs -f -d "/home/$username/customiso/arch/x86_64/squashfs-root" "/home/$username/customiso/arch/x86_64/airootfs.sfs" #&> /dev/null
+echo -ne "$logheader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
+#sudo unsquashfs -f -d "/home/$username/customiso/arch/x86_64/squashfs-root" "/home/$username/customiso/arch/x86_64/airootfs.sfs" #&> /dev/null
 printSuccessOrFailure
 
 echo -ne "$logheader Copying the scripts to the ISO ... "
