@@ -150,11 +150,11 @@ printSuccessOrFailure
 
 if [[ "$verbose" = true ]]; then
     echo -e "\n$logHeader Repacking ISO (this will take a while) ... "
-    sudo mkarchiso -v -w /tmp/archiso-tmp archlive
+    sudo mkarchiso -v -w /tmp/archiso-tmp "/home/$username/archlive"
 
 else
     echo -ne "\n$logHeader Repacking ISO (this will take a while) ... "
-    sudo mkarchiso -v -w /tmp/archiso-tmp archlive &> /dev/null
+    sudo mkarchiso -v -w /tmp/archiso-tmp "/home/$username/archlive" &> /dev/null
 fi
 
 printSuccessOrFailure
