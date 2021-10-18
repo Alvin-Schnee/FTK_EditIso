@@ -30,6 +30,8 @@
 #⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠹⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶
 #⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠈⠙⠛⠛⠛⠛⠋⠁⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶
 
+###################### Global Variables #####################
+
 GREEN='\033[1;32m'
 YELLOW='\033[1;33m'
 RED='\033[1;31m'
@@ -40,17 +42,26 @@ logHeader="${RED}$programName - EditIso${DEFAULT} >"
 
 installer="Strelizia"
 initializer="StreliziaChroot"
-
 username=$(whoami)
+
+#############################################################
+
+###################### Helper Functions #####################
+
+
 
 function printSuccessOrFailure {
     if [ $? -eq 0 ]; then
         echo -e "[ ${GREEN}Done${DEFAULT} ]"
     else
-        echo -e "[ ${RED}Failed${DEFAULT} ]. Exiting." 
+        echo -e "[ ${RED}Failed${DEFAULT} ]. Exiting."
         exit 1
     fi
 }
+
+#############################################################
+
+####################### Main Functions ######################
 
 clear
 
@@ -73,6 +84,7 @@ fi
 
 pacman -Sy squashfs-tools
 echo $username
+
 #############################################################
 
 ################### Downloading Installer ###################
@@ -91,11 +103,11 @@ clear
 
 ####################### Main Functions ######################
 
-echo -e "$logheader Enabling time synchronization ... "
+echo -ne "\n$logHeader Enabling time synchronization ... "
 systemctl start systemd-timesyncd
 
 echo -ne "$logheader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
-unsquashfs -f -d /home/$username/customiso/arch/x86_64/squashfs-root /home/$username/customiso/arch/x86_64/airootfs.sfs > /dev/null
+unsquashfs -f -d /home/$username/customiso/arch/x86_64/squashfs-root /home/$username/customiso/arch/x86_64/airootfs.sfs &> /dev/null
 printSuccessOrFailure
 
 echo -ne "$logheader Copying the scripts to the ISO ... "
