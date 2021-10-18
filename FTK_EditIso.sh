@@ -107,9 +107,7 @@ echo -ne "\n$logHeader Enabling time synchronization ... "
 sudo systemctl start systemd-timesyncd
 printSuccessOrFailure
 
-echo "pd"
-
-echo -ne "\n$logHeader $installer Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
+echo -ne "\n$logHeader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
 #sudo unsquashfs -f -d "/home/$username/customiso/arch/x86_64/squashfs-root" "/home/$username/customiso/arch/x86_64/airootfs.sfs" #&> /dev/null
 printSuccessOrFailure
 
