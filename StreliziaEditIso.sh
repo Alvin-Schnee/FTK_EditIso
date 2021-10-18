@@ -74,11 +74,11 @@ fi
 
 gh repo clone Alvin-Schnee/Strelizia
 
-chmod +x $installer/$installer
-chmod +x $installer/$initializer
+chmod +x "$installer/$installer.sh"
+chmod +x "$installer/$initializer.sh"
 
-dos2unix -q $installer/$installer
-dos2unix -q $installer/$initializer
+dos2unix -q "$installer/$installer.sh"
+dos2unix -q "$installer/$initializer.sh"
 
 rm -rf archlive &>/dev/null
 
