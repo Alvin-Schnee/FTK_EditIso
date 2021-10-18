@@ -122,9 +122,9 @@ done
 
 ##################### ISO Modification ######################
 
-sudo su
-rm -rf Strelizia &> /dev/null
-rm -rf /tmp/archiso-tmp &> /dev/null
+
+sudo rm -rf Strelizia &> /dev/null
+sudo rm -rf /tmp/archiso-tmp &> /dev/null
 
 echo -ne "\n$logHeader Downloading custom scripts ... "
 gh repo clone Alvin-Schnee/Strelizia &> /dev/null
