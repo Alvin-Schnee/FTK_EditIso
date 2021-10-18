@@ -122,7 +122,6 @@ done
 
 ##################### ISO Modification ######################
 
-sudo
 echo -ne "\n$logHeader Downloading custom scripts ... "
 gh repo clone Alvin-Schnee/Strelizia &> /dev/null
 printSuccessOrFailure
@@ -138,15 +137,15 @@ printSuccessOrFailure
 rm -rf archlive &>/dev/null
 
 echo -ne "\n$logHeader Creating custom config ... "
-cp -r /usr/share/archiso/configs/releng/ archlive
+sudo cp -r /usr/share/archiso/configs/releng/ "/home/$username/archlive"
 printSuccessOrFailure
 
 echo -ne "\n$logHeader Copying installer to config ... "
-cp -r "/home/$username/$installer/$installer.sh" archlive/airootfs/etc
+sudo cp -r "/home/$username/$installer/$installer.sh" "/home/$username/archlive/airootfs/etc"
 printSuccessOrFailure
 
 echo -ne "\n$logHeader Copying initializer to config ... "
-cp -r "/home/$username/$installer/$initializer.sh" archlive/airootfs/etc
+sudo cp -r "/home/$username/$installer/$initializer.sh" "/home/$username/archlive/airootfs/etc"
 printSuccessOrFailure
 
 if [[ "$verbose" = true ]]; then
