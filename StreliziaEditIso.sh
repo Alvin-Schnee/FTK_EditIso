@@ -134,8 +134,8 @@ dos2unix -q "$installer/$installer.sh"
 dos2unix -q "$installer/$initializer.sh"
 printSuccessOrFailure
 
-rm -rf archlive &> /dev/null
-rm -rf /tmp &> /dev/null
+sudo rm -rf archlive &> /dev/null
+sudo rm -rf /tmp &> /dev/null
 
 echo -ne "\n$logHeader Creating custom config ... "
 sudo cp -r /usr/share/archiso/configs/releng/ "/home/$username/archlive"
