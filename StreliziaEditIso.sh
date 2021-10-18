@@ -86,5 +86,5 @@ cp -r /usr/share/archiso/configs/releng/ archlive
 cp -r "/home/$username/$installer/$installer.sh" archlive/airootfs/etc
 cp -r "/home/$username/$installer/$initializer.sh" archlive/airootfs/etc
 
-mkarchiso -v -w /tmp/archiso-tmp archlive
+sudo mkarchiso -v -w /tmp/archiso-tmp archlive
 rm -rf /tmp/archiso-tm
