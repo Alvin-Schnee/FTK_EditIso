@@ -54,7 +54,7 @@ isArchisoInstalled='pacman -Q archiso'
 
 ###################### Primary checks #######################
 
-clear
+#clear
 
 if [ ! -n "$isGitInstalled" ]; then
     echo -ne "$logheader Installing git ... "
@@ -131,22 +131,22 @@ gh repo clone Alvin-Schnee/Strelizia &> /dev/null
 printSuccessOrFailure
 
 echo -ne "\n$logHeader Preparing custom scripts ... "
-chmod +x "$installer/$installer.sh"
-chmod +x "$installer/$initializer.sh"
+sudo chmod +x "$installer/$installer.sh"
+sudo chmod +x "$installer/$initializer.sh"
 
-dos2unix -q "$installer/$installer.sh"
-dos2unix -q "$installer/$initializer.sh"
+sudo dos2unix -q "$installer/$installer.sh"
+sudo dos2unix -q "$installer/$initializer.sh"
 printSuccessOrFailure
 
-rm -rf archlive &>/dev/null
+sudo rm -rf archlive &>/dev/null
 
 echo -ne "\n$logHeader Copying files to ISO ... "
-cp -r /usr/share/archiso/configs/releng/ archlive
+sudo cp -r /usr/share/archiso/configs/releng/ archlive
 
 mkdir archlive/airootfs/bin
 
-cp -r "/home/$username/$installer/$installer.sh" "archlive/airootfs/bin/$installer.sh"
-cp -r "/home/$username/$installer/$initializer.sh" "archlive/airootfs/bin/$initializer.sh"
+sudo cp -r "/home/$username/$installer/$installer.sh" "archlive/airootfs/bin/$installer.sh"
+sudo cp -r "/home/$username/$installer/$initializer.sh" "archlive/airootfs/bin/$initializer.sh"
 printSuccessOrFailure
 
 if [[ "$verbose" = true ]]; then
@@ -161,7 +161,7 @@ fi
 printSuccessOrFailure
 
 echo -ne "\n$logHeader Cleaning out temporary files ... "
-rm -rf /tmp/archiso-tmp &> /dev/null
+sudo rm -rf /tmp/archiso-tmp &> /dev/null
 printSuccessOrFailure
 
 #############################################################
