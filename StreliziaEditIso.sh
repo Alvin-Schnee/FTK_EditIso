@@ -143,7 +143,7 @@ sudo rm -rf "/home/$username/archlive" &>/dev/null
 echo -ne "\n$logHeader Copying files to ISO ... "
 sudo cp -r "/usr/share/archiso/configs/releng/" "/home/$username/archlive"
 
-sudo mkdir "/home/$username/archlive"/airootfs/bin
+sudo mkdir "/home/$username/archlive/airootfs/bin"
 
 sudo cp -r "/home/$username/$installer/$installer.sh" "/home/$username/archlive/airootfs/bin/$installer.sh"
 sudo cp -r "/home/$username/$installer/$initializer.sh" "/home/$username/archlive/airootfs/bin/$initializer.sh"
