@@ -108,7 +108,7 @@ systemctl start systemd-timesyncd
 printSuccessOrFailure
 
 echo -ne "$logheader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
-unsquashfs -f -d "/home/$(username)/customiso/arch/x86_64/squashfs-root" "/home/$(username)/customiso/arch/x86_64/airootfs.sfs" #&> /dev/null
+unsquashfs -f -d "/home/$(whoami)/customiso/arch/x86_64/squashfs-root" "/home/$(whoami)/customiso/arch/x86_64/airootfs.sfs" #&> /dev/null
 printSuccessOrFailure
 
 echo -ne "$logheader Copying the scripts to the ISO ... "
