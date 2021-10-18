@@ -122,8 +122,9 @@ done
 
 ##################### ISO Modification ######################
 
+sudo
 echo -ne "\n$logHeader Downloading custom scripts ... "
-sudo gh repo clone Alvin-Schnee/Strelizia &> /dev/null
+gh repo clone Alvin-Schnee/Strelizia &> /dev/null
 printSuccessOrFailure
 
 echo -ne "\n$logHeader Preparing custom scripts ... "
