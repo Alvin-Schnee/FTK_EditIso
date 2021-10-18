@@ -137,15 +137,15 @@ printSuccessOrFailure
 rm -rf archlive &>/dev/null
 
 echo -ne "\n$logHeader Creating custom config ... "
-sudo cp -r /usr/share/archiso/configs/releng/ archlive
+cp -r /usr/share/archiso/configs/releng/ archlive
 printSuccessOrFailure
 
-echo -ne "\n$logHeader Creating installer to config ... "
-sudo cp -r "/home/$username/$installer/$installer.sh" archlive/airootfs/etc
+echo -ne "\n$logHeader Copying installer to config ... "
+cp -r "/home/$username/$installer/$installer.sh" archlive/airootfs/etc
 printSuccessOrFailure
 
 echo -ne "\n$logHeader Copying initializer to config ... "
-sudo cp -r "/home/$username/$installer/$initializer.sh" archlive/airootfs/etc
+cp -r "/home/$username/$installer/$initializer.sh" archlive/airootfs/etc
 printSuccessOrFailure
 
 if [[ "$verbose" = true ]]; then
