@@ -141,8 +141,8 @@ rm -rf archlive &>/dev/null
 
 echo -ne "\n$logHeader Copying files to ISO ... "
 cp -r /usr/share/archiso/configs/releng/ archlive
-cp "/home/$username/$installer/$installer.sh" archlive/airootfs/bin
-cp "/home/$username/$installer/$initializer.sh" archlive/airootfs/bin
+cp -r "/home/$username/$installer/$installer.sh" archlive/airootfs/bin
+cp -r "/home/$username/$installer/$initializer.sh" archlive/airootfs/bin
 printSuccessOrFailure
 
 if [[ "$verbose" = true ]]; then
@@ -157,7 +157,7 @@ fi
 printSuccessOrFailure
 
 echo -ne "\n$logHeader Cleaning out temporary files ... "
-rm -rf /tmp/archiso-tm &> /dev/null
+rm -rf /tmp/archiso-tmp &> /dev/null
 printSuccessOrFailure
 
 #############################################################
