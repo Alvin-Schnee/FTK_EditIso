@@ -61,8 +61,6 @@ function printSuccessOrFailure {
 
 ####################### Main Functions ######################
 
-sudo su
-
 clear
 
 isGitInstalled='pacman -Q git github-cli'
@@ -82,8 +80,7 @@ if [ ! -n "$isDos2unixInstalled" ]; then
 	printSuccessOrFailure
 fi
 
-pacman -Sy squashfs-tools
-echo $username
+sudo pacman -Sy squashfs-tools &> /dev/null
 
 #############################################################
 
@@ -99,12 +96,10 @@ dos2unix -q /home/$username/$installer/$initializer.sh &> /dev/null
 
 #############################################################
 
-clear
-
 ####################### Main Functions ######################
 
 echo -ne "\n$logHeader Enabling time synchronization ... \n"
-systemctl start systemd-timesyncd
+sudo systemctl start systemd-timesyncd
 echo -e "\n$logHeader Time synchronization is now functional."
 
 echo -ne "$logheader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
@@ -112,17 +107,17 @@ sudo unsquashfs -f -d "/home/$username/customiso/arch/x86_64/squashfs-root" "/ho
 printSuccessOrFailure
 
 echo -ne "$logheader Copying the scripts to the ISO ... "
-cp /home/$username/$installer/$installer.sh /home/$username/customiso/arch/x86_64/squashfs-root/bin/$installer
-cp /home/$username/$installer/$initializer.sh /home/$username/customiso/arch/x86_64/squashfs-root/bin/$initializer
+sudo cp /home/$username/$installer/$installer.sh /home/$username/customiso/arch/x86_64/squashfs-root/bin/$installer
+sudo cp /home/$username/$installer/$initializer.sh /home/$username/customiso/arch/x86_64/squashfs-root/bin/$initializer
 printSuccessOrFailure
 
 echo -ne "\n$logheader Moving package list ... "
-mv /home/$username/customiso/arch/x86_64/squashfs-root/root/pkglist.txt /home/$username/customiso/arch/pkglist.x86_64.txt
+sudo mv /home/$username/customiso/arch/x86_64/squashfs-root/root/pkglist.txt /home/$username/customiso/arch/pkglist.x86_64.txt
 printSuccessOrFailure
 
 rm /home/$username/customiso/arch/x86_64/airootfs.sfs
 echo -ne "$logheader Recreating airootfs.sfs via mksquashfs (this is gonna take some time) ... "
-mksquashfs /home/$username/customiso/arch/x86_64/squashfs-root /home/$username/customiso/arch/x86_64/airootfs.sfs -comp xz &> /dev/null
+sudo mksquashfs /home/$username/customiso/arch/x86_64/squashfs-root /home/$username/customiso/arch/x86_64/airootfs.sfs -comp xz &> /dev/null
 printSuccessOrFailure
 
 rm -r /home/$username/customiso/arch/x86_64/squashfs-root
