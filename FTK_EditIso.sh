@@ -107,49 +107,51 @@ echo -ne "\n$logHeader Enabling time synchronization ... "
 sudo systemctl start systemd-timesyncd
 printSuccessOrFailure
 
+scho "pd"
+
 echo -ne "$logheader Expanding airootfs.sfs via unsquashfs (this is gonna take some time) ... "
 #sudo unsquashfs -f -d "/home/$username/customiso/arch/x86_64/squashfs-root" "/home/$username/customiso/arch/x86_64/airootfs.sfs" #&> /dev/null
 printSuccessOrFailure
 
-echo -ne "$logheader Copying the scripts to the ISO ... "
-sudo cp /home/$username/$installer/$installer.sh /home/$username/customiso/arch/x86_64/squashfs-root/bin/$installer
-sudo cp /home/$username/$installer/$initializer.sh /home/$username/customiso/arch/x86_64/squashfs-root/bin/$initializer
-printSuccessOrFailure
-
-echo -ne "\n$logheader Moving package list ... "
-sudo mv /home/$username/customiso/arch/x86_64/squashfs-root/root/pkglist.txt /home/$username/customiso/arch/pkglist.x86_64.txt
-printSuccessOrFailure
-
-rm /home/$username/customiso/arch/x86_64/airootfs.sfs
-echo -ne "$logheader Recreating airootfs.sfs via mksquashfs (this is gonna take some time) ... "
-sudo mksquashfs /home/$username/customiso/arch/x86_64/squashfs-root /home/$username/customiso/arch/x86_64/airootfs.sfs -comp xz &> /dev/null
-printSuccessOrFailure
-
-rm -r /home/$username/customiso/arch/x86_64/squashfs-root
-echo -ne "$logheader Generating signature ... "
-md5sum /home/$username/customiso/arch/x86_64/airootfs.sfs > /home/$username/customiso/arch/x86_64/airootfs.md5
-printSuccessOrFailure
-
-cd /home/$username/customiso
-echo -ne "$logheader Generating ISO image ... "
-genisoimage -l -r -J -V "ARCH_202110" -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o /home/$username/FTK_PROJECT-ARCH.iso ./ &> /dev/null
-isohybrid /home/$username/FTK_PROJECT-ARCH.iso > /dev/null
-printSuccessOrFailure
-cd /home/$username/FTK_EditISO
-
-echo -ne "$logheader Mounting USB device ... "
-mount LABEL="ARCH_202110" /mnt/usb # -t ntfs-3g -o nls=utf8,umask=0222
-printSuccessOrFailure
-
-echo -ne "$logheader Copying ISO to USB device ... "
-rm -rf /mnt/usb/*
-cp /home/$username/FTK_PROJECT-ARCH.iso /mnt/usb/FTK_PROJECT-ARCH.iso
-printSuccessOrFailure
-
-echo -ne "$logheader Unmounting USB device ..."
-umount LABEL="ARCH_202110"
-printSuccessOrFailure
-
-rm -rf /home/$username/$installer
-
-echo -ne "\n$logheader Thank you for your patience, master. *bows*\n"
+#echo -ne "$logheader Copying the scripts to the ISO ... "
+#sudo cp /home/$username/$installer/$installer.sh /home/$username/customiso/arch/x86_64/squashfs-root/bin/$installer
+#sudo cp /home/$username/$installer/$initializer.sh /home/$username/customiso/arch/x86_64/squashfs-root/bin/$initializer
+#printSuccessOrFailure
+#
+#echo -ne "\n$logheader Moving package list ... "
+#sudo mv /home/$username/customiso/arch/x86_64/squashfs-root/root/pkglist.txt /home/$username/customiso/arch/pkglist.x86_64.txt
+#printSuccessOrFailure
+#
+#rm /home/$username/customiso/arch/x86_64/airootfs.sfs
+#echo -ne "$logheader Recreating airootfs.sfs via mksquashfs (this is gonna take some time) ... "
+#sudo mksquashfs /home/$username/customiso/arch/x86_64/squashfs-root /home/$username/customiso/arch/x86_64/airootfs.sfs -comp xz &> /dev/null
+#printSuccessOrFailure
+#
+#rm -r /home/$username/customiso/arch/x86_64/squashfs-root
+#echo -ne "$logheader Generating signature ... "
+#md5sum /home/$username/customiso/arch/x86_64/airootfs.sfs > /home/$username/customiso/arch/x86_64/airootfs.md5
+#printSuccessOrFailure
+#
+#cd /home/$username/customiso
+#echo -ne "$logheader Generating ISO image ... "
+#genisoimage -l -r -J -V "ARCH_202110" -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o /home/$username/FTK_PROJECT-ARCH.iso ./ &> /dev/null
+#isohybrid /home/$username/FTK_PROJECT-ARCH.iso > /dev/null
+#printSuccessOrFailure
+#cd /home/$username/FTK_EditISO
+#
+#echo -ne "$logheader Mounting USB device ... "
+#mount LABEL="ARCH_202110" /mnt/usb # -t ntfs-3g -o nls=utf8,umask=0222
+#printSuccessOrFailure
+#
+#echo -ne "$logheader Copying ISO to USB device ... "
+#rm -rf /mnt/usb/*
+#cp /home/$username/FTK_PROJECT-ARCH.iso /mnt/usb/FTK_PROJECT-ARCH.iso
+#printSuccessOrFailure
+#
+#echo -ne "$logheader Unmounting USB device ..."
+#umount LABEL="ARCH_202110"
+#printSuccessOrFailure
+#
+#rm -rf /home/$username/$installer
+#
+#echo -ne "\n$logheader Thank you for your patience, master. *bows*\n"
