@@ -123,45 +123,45 @@ done
 ##################### ISO Modification ######################
 
 
-sudo rm -rf Strelizia &> /dev/null
-sudo rm -rf /tmp/archiso-tmp &> /dev/null
+sudo rm -rf "/home/$username/Strelizia" &> /dev/null
+sudo rm -rf "/tmp/archiso-tmp" &> /dev/null
 
 echo -ne "\n$logHeader Downloading custom scripts ... "
 gh repo clone Alvin-Schnee/Strelizia &> /dev/null
 printSuccessOrFailure
 
 echo -ne "\n$logHeader Preparing custom scripts ... "
-sudo chmod +x "$installer/$installer.sh"
-sudo chmod +x "$installer/$initializer.sh"
+sudo chmod +x "/home/$username/$installer/$installer.sh"
+sudo chmod +x "/home/$username/$installer/$initializer.sh"
 
-sudo dos2unix -q "$installer/$installer.sh"
-sudo dos2unix -q "$installer/$initializer.sh"
+sudo dos2unix -q "/home/$username/$installer/$installer.sh"
+sudo dos2unix -q "/home/$username/$installer/$initializer.sh"
 printSuccessOrFailure
 
-sudo rm -rf archlive &>/dev/null
+sudo rm -rf "/home/$username/archlive" &>/dev/null
 
 echo -ne "\n$logHeader Copying files to ISO ... "
-sudo cp -r /usr/share/archiso/configs/releng/ archlive
+sudo cp -r "/usr/share/archiso/configs/releng/" "/home/$username/archlive"
 
-mkdir archlive/airootfs/bin
+sudo mkdir "/home/$username/archlive"/airootfs/bin
 
-sudo cp -r "/home/$username/$installer/$installer.sh" "archlive/airootfs/bin/$installer.sh"
-sudo cp -r "/home/$username/$installer/$initializer.sh" "archlive/airootfs/bin/$initializer.sh"
+sudo cp -r "/home/$username/$installer/$installer.sh" "/home/$username/archlive/airootfs/bin/$installer.sh"
+sudo cp -r "/home/$username/$installer/$initializer.sh" "/home/$username/archlive/airootfs/bin/$initializer.sh"
 printSuccessOrFailure
 
 if [[ "$verbose" = true ]]; then
     echo -e "\n$logHeader Repacking ISO (this will take a while) ... "
-    sudo mkarchiso -v -w /tmp/archiso-tmp archlive
+    sudo mkarchiso -v -w "/tmp/archiso-tmp" "/home/$username/archlive/"
 
 else
     echo -ne "\n$logHeader Repacking ISO (this will take a while) ... "
-    sudo mkarchiso -v -w /tmp/archiso-tmp archlive &> /dev/null
+    sudo mkarchiso -v -w "/tmp/archiso-tmp" "/home/$username/archlive/" &> /dev/null
 fi
 
 printSuccessOrFailure
 
 echo -ne "\n$logHeader Cleaning out temporary files ... "
-sudo rm -rf /tmp/archiso-tmp &> /dev/null
+sudo rm -rf "/tmp/archiso-tmp" &> /dev/null
 printSuccessOrFailure
 
 #############################################################
