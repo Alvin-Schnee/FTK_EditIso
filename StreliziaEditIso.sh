@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script Name   : TestEditIso
+# Script Name   : StreliziaEditIso
 # Script Info   : Automatically handles the customization of an existing official Archiso, in order to add our own installation scripts in it.
 # Script Ver.   : 1.0.0 (18 Oct. 2021)
 # Script Author : Alvin Schnee (FoxehCorp.)
@@ -44,9 +44,15 @@ installer="Strelizia"
 initializer="StreliziaChroot"
 username=$(whoami)
 
+verbose=false
+
 isGitInstalled='pacman -Q git github-cli'
 isDos2unixInstalled='pacman -Q dos2unix'
 isArchisoInstalled='pacman -Q archiso'
+
+#############################################################
+
+###################### Primary checks #######################
 
 clear
 
@@ -72,19 +78,83 @@ if [ ! -n "$isArchisoInstalled" ]; then
     gh auth login
 fi
 
-gh repo clone Alvin-Schnee/Strelizia
+#############################################################
 
+#################### Argument Validation ####################
+
+function printSuccessOrFailure {
+    if [ $? -eq 0 ]; then
+        echo -e "[ ${GREEN}Done${DEFAULT} ]"
+    else
+        echo -e "[ ${RED}Failed${DEFAULT} ]. Exiting." 
+        exit 1
+    fi
+}
+
+function printHelp {
+    echo -e "$programName"
+    echo -e "Syntax :"
+    echo -e "\t$programName <argument>"
+    echo -e "Arguments :"
+    echo -e "\t-v (alternatively --verbose) : Displays additional information about the ongoing commands."
+    echo -e "\t-h (alternatively --help : Displays help concerning the command."
+}
+
+while test $# -gt 0
+do
+    case "$1" in
+        -v | --verbose)
+            verbose=true
+        ;;
+        -h | --help)
+            printHelp
+            exit 0
+        ;;
+        -* | --* | *)
+            echo "$logHeader Argument $1 not defined. Exiting."
+            exit 1
+        ;;
+    esac
+    shift
+done
+
+#############################################################
+
+##################### ISO Modification ######################
+
+echo -ne "\n$logHeader Downloading custom scripts ... "
+gh repo clone Alvin-Schnee/Strelizia &> /dev/null
+printSuccessOrFailure
+
+echo -ne "\n$logHeader Preparing custom scripts ... "
 chmod +x "$installer/$installer.sh"
 chmod +x "$installer/$initializer.sh"
 
 dos2unix -q "$installer/$installer.sh"
 dos2unix -q "$installer/$initializer.sh"
+printSuccessOrFailure
 
 rm -rf archlive &>/dev/null
 
+echo -ne "\n$logHeader Copying files to ISO ... "
 cp -r /usr/share/archiso/configs/releng/ archlive
-cp -r "/home/$username/$installer/$installer.sh" archlive/airootfs/etc
-cp -r "/home/$username/$installer/$initializer.sh" archlive/airootfs/etc
+cp "/home/$username/$installer/$installer.sh" archlive/airootfs/bin
+cp "/home/$username/$installer/$initializer.sh" archlive/airootfs/bin
+printSuccessOrFailure
 
-sudo mkarchiso -v -w /tmp/archiso-tmp archlive
-rm -rf /tmp/archiso-tm
+if [[ "$verbose" = true ]]; then
+    echo -e "\n$logHeader Repacking ISO (this will take a while) ... "
+    sudo mkarchiso -v -w /tmp/archiso-tmp archlive
+
+else
+    echo -ne "\n$logHeader Repacking ISO (this will take a while) ... "
+    sudo mkarchiso -v -w /tmp/archiso-tmp archlive &> /dev/null
+fi
+
+printSuccessOrFailure
+
+echo -ne "\n$logHeader Cleaning out temporary files ... "
+rm -rf /tmp/archiso-tm &> /dev/null
+printSuccessOrFailure
+
+#############################################################
