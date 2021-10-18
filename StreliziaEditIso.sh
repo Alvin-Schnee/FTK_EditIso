@@ -123,6 +123,7 @@ done
 ##################### ISO Modification ######################
 
 rm -rf Strelizia
+rm -rf /tmp/archiso-tmp
 
 echo -ne "\n$logHeader Downloading custom scripts ... "
 gh repo clone Alvin-Schnee/Strelizia &> /dev/null
